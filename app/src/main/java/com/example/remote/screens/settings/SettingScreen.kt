@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.remote.R
-import com.example.remote.common.ext.StatBarColor
+import com.example.remote.util.ext.StatBarColor
 import com.example.remote.ui.theme.BlackWith10Opacity
 import com.example.remote.ui.theme.CardBackground
 import com.example.remote.ui.theme.PremiumYellow

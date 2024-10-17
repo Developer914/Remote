@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.remote.R
-import com.example.remote.common.ext.StatBarColor
+import com.example.remote.util.ext.StatBarColor
 import com.example.remote.resources.backgroundImages
 import com.example.remote.resources.headings
 import com.example.remote.resources.subHeadings

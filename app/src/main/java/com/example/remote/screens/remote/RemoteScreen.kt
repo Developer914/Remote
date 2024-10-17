@@ -1,367 +1,324 @@
 package com.example.remote.screens.remote
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.remote.composable.RemoteImageButton
-import com.example.remote.composable.RemoteNumberButton
-import com.example.remote.common.ext.StatBarColor
-import com.example.remote.resources.remoteButtonImages
-import com.example.remote.resources.remoteButtonNumbers
-import com.example.remote.ui.theme.BorderColor
-import com.example.remote.ui.theme.SelectedColor
-import com.example.remote.ui.theme.TextColor
-import com.example.remote.ui.theme.WheelLightGray
+import androidx.navigation.NavController
+import com.example.remote.ui.screens.remote.keypad.KeyPad
+import com.example.remote.ui.screens.remote.navigation.NavigationWheel
+import com.example.remote.ui.screens.remote.remotepad.RemotePad
+import com.example.remote.ui.screens.remote.touchpad.Touchpad
+import com.example.remote.ui.theme.SelectedBottomNavTextColor
+import com.example.remote.ui.theme.TabColor
+import com.example.remote.ui.theme.TabTextColor
+import com.example.remote.ui.theme.UnselectedBottomNavTextColor
+import com.example.remote.util.ext.clickableWithNoRippleEffect
+import com.example.remote.R
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun RemoteScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                color = Color.White
-            )
-    ) {
-        val isRemoteWheelSelected = remember { mutableStateOf(true) }
-        val isRemoteSelected = remember { mutableStateOf(true) }
-
-        StatBarColor(Color.White)
-
-        TopButtons(isRemoteSelected.value){
-            isRemoteSelected.value = it
-        }
-
-        if (isRemoteSelected.value)
-            RemoteButtons()
-        else
-            Keypad()
-
-        if(isRemoteWheelSelected.value)
-            Wheel(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-            )
-        else
-            TouchPad(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-            )
-
-        Spacer(
-            modifier = Modifier.height(26.dp)
+    Box(modifier = Modifier.fillMaxSize()
+        .background(color = Color.White)) {
+        Image(
+            modifier = Modifier.matchParentSize(),
+            painter = painterResource(id = R.drawable.bg_app),
+            contentDescription = null
         )
-
-        MiddleRow(
-            isRemoteWheelSelected.value,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-        ){
-            isRemoteWheelSelected.value = it
-        }
-    }
-}
-
-@Composable
-fun TopButtons(isRemoteSelected: Boolean , setRemoteSelectedOrNot:(Boolean) -> Unit){
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(44.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .weight(.5f)
-                .fillMaxHeight()
-                .align(Alignment.CenterVertically)
-                .clickable {
-                    setRemoteSelectedOrNot(true)
-                }
-                .drawBehind {
-                    val strokeWidth = 2.dp.toPx() // Border thickness
-                    val borderPadding = 0.dp.toPx() // Gap between text and border
-                    val y = size.height - strokeWidth / 2 - borderPadding
-                    if(isRemoteSelected)
-                        drawLine(
-                            color = SelectedColor, // Border color
-                            start = Offset(0f, y),
-                            end = Offset(size.width, y),
-                            strokeWidth = strokeWidth
-                        )
-                    else
-                    {}
-                },
-            contentAlignment = Alignment.Center
+        Column(
+            Modifier
+                .matchParentSize()
         ) {
-            Text(
-                text = "Remote",
-                fontSize = 16.sp,
-                fontWeight = FontWeight(700),
-                color = if(isRemoteSelected) SelectedColor else TextColor
+            PadViewPagerWithTabs(
+                Modifier
+                    .weight(0.55f)
             )
-        }
+            WheelViewPagerWithTabs(
+                Modifier
+                    .weight(0.45f)
+            )
 
-        Box(
-            modifier = Modifier
-                .weight(.5f)
-                .fillMaxHeight()
-                .align(Alignment.CenterVertically)
-                .clickable {
-                    setRemoteSelectedOrNot(false)
-                }
-                .drawBehind {
-                    val strokeWidth = 2.dp.toPx() // Border thickness
-                    val borderPadding = 0.dp.toPx() // Gap between text and border
-                    val y = size.height - strokeWidth / 2 - borderPadding
-                    if (!isRemoteSelected)
-                        drawLine(
-                            color = SelectedColor, // Border color
-                            start = Offset(0f, y),
-                            end = Offset(size.width, y),
-                            strokeWidth = strokeWidth
-                        )
-                    else
-                    {}
-                },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Keypad",
-                fontSize = 16.sp,
-                fontWeight = FontWeight(700),
-                color = if(isRemoteSelected) TextColor else SelectedColor
-            )
         }
 
     }
 }
 
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RemoteButtons() {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = Modifier
-            .padding(top = 34.dp)// You can adjust this as needed
-    ) {
-        items(12) { index ->
-            if (index != 10) {
-                remoteButtonImages[index]?.let { img ->
-                    RemoteImageButton(img)
-                }
+private fun PadViewPagerWithTabs(
+    modifier: Modifier
+) {
+    val viewPagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        PadTabs(viewPagerState)
+        PadViewPager(viewPagerState)
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun PadViewPager(
+    viewPagerState: PagerState
+) {
+
+    // move to current page if some issue cause it to stuck between two pages
+    LaunchedEffect(viewPagerState.currentPage) {
+        viewPagerState.animateScrollToPage(viewPagerState.currentPage)
+    }
+
+    HorizontalPager(
+        modifier = Modifier.fillMaxSize(),
+        beyondViewportPageCount = 2,
+        state = viewPagerState,
+        verticalAlignment = Alignment.Top,
+    ) { pagerIndex ->
+        when (pagerIndex) {
+            0 -> {
+                RemotePad()
+            }
+
+            1 -> {
+                KeyPad()
+            }
+
+            else -> {
+
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Keypad() {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = Modifier
-            .padding(top = 34.dp)// You can adjust this as needed
+private fun PadTabs(
+    viewPagerState: PagerState,
+) {
+    val scope = rememberCoroutineScope()
+    TabRow(
+        modifier = Modifier.fillMaxWidth(),
+        divider = {},
+        indicator = { tabPositions ->
+            if (viewPagerState.currentPage < tabPositions.size) {
+                TabRowDefaults.SecondaryIndicator(
+                    Modifier.tabIndicatorOffset(tabPositions[viewPagerState.currentPage]),
+                    color = TabColor
+
+                )
+            }
+        },
+        containerColor = Color.Transparent,
+        contentColor = TabColor,
+        selectedTabIndex = viewPagerState.currentPage,
     ) {
-        items(12) { index ->
-            if (index != 9 && index != 11) {
-                remoteButtonNumbers[index]?.let { num ->
-                    RemoteNumberButton(num.toString())
+        Tab(
+            viewPagerState.currentPage,
+            0,
+            "Remote",
+            onTabClick = {
+                scope.launch {
+                    viewPagerState.animateScrollToPage(it)
                 }
+            })
+        Tab(
+            viewPagerState.currentPage,
+            1,
+            "KeyPad",
+            onTabClick = {
+                scope.launch {
+                    viewPagerState.animateScrollToPage(it)
+                }
+            })
+    }
+}
+
+@Composable
+private fun Tab(
+    currentPage: Int,
+    tabId: Int,
+    text: String,
+    onTabClick: (Int) -> Unit,
+) {
+    val isSelected = currentPage == tabId
+    val color =
+        if (isSelected) TabTextColor else UnselectedBottomNavTextColor
+    Card(
+        modifier = Modifier
+            .padding(vertical = 15.dp)
+            .clickableWithNoRippleEffect {
+                onTabClick.invoke(tabId)
+            },
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            text = text,
+            color = color,
+            fontSize = (16).sp,
+            fontFamily = FontFamily(Font(R.font.plus_jakarta_sans_bold))
+        )
+    }
+
+}
+
+@Composable
+private fun WheelViewPagerWithTabs(
+    modifier: Modifier
+) {
+    val viewPagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        WheelViewPager(viewPagerState,Modifier.weight(0.7f))
+        WheelTabs(viewPagerState,Modifier.weight(0.3f))
+
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun WheelViewPager(
+    viewPagerState: PagerState,
+    modifier: Modifier
+) {
+
+    // move to current page if some issue cause it to stuck between two pages
+    LaunchedEffect(viewPagerState.currentPage) {
+        viewPagerState.animateScrollToPage(viewPagerState.currentPage)
+    }
+
+    HorizontalPager(
+        modifier = modifier.fillMaxSize(),
+        beyondViewportPageCount = 2,
+        state = viewPagerState,
+        verticalAlignment = Alignment.Top,
+    ) { pagerIndex ->
+        when (pagerIndex) {
+            0 -> {
+                NavigationWheel()
+            }
+
+            1 -> {
+                Touchpad()
+            }
+
+            else -> {
+
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Wheel(modifier: Modifier){
+private fun WheelTabs(
+    viewPagerState: PagerState,
+    modifier:  Modifier,
+) {
+    val scope = rememberCoroutineScope()
+    Box(modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+        Box(modifier.fillMaxWidth(0.65f).padding(top = 10.dp), contentAlignment = Alignment.Center) {
+            Image(
+                modifier = Modifier.fillMaxWidth(),
+                painter = painterResource(id = R.drawable.bg_tab_wheel),
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds
+            )
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                divider = {},
+                indicator = {},
+                containerColor = Color.Transparent,
+                selectedTabIndex = viewPagerState.currentPage,
+            ) {
+                WheelItemTab(viewPagerState.currentPage, 0, "Remote Wheel", onTabClick = {
+                    scope.launch {
+                        viewPagerState.animateScrollToPage(it)
+                    }
 
-    Box(
-        modifier = modifier
-            .size(
-                width = 229.dp,
-                height = 229.dp
-            )
-            .border(
-                2.dp,
-                BorderColor,
-                CircleShape
-            )
-            .clip(CircleShape)
-            .background(
-                Brush.horizontalGradient(
-                    colors = listOf(Color.White, WheelLightGray),
-                    startX = 0f,
-                    endX = 1500f // Adjust as needed for your layout
-                )
-            ),
-        contentAlignment = Alignment.Center
-    ){
-        Box(
-            modifier = Modifier
-                .size(
-                    width = 85.dp,
-                    height = 85.dp
-                )
-                .border(
-                    2.dp,
-                    BorderColor,
-                    CircleShape
-                )
-                .clip(CircleShape)
-                .background(
-                    Brush.horizontalGradient(
-                        colors = listOf(Color.White, WheelLightGray),
-                        startX = 0f,
-                        endX = 600f // Adjust as needed for your layout
-                    )
-                ),
-            contentAlignment = Alignment.Center
-        ){}
+                })
+                WheelItemTab(viewPagerState.currentPage, 1,
+                    "Touch pad", onTabClick = {
+                        scope.launch {
+                            viewPagerState.animateScrollToPage(it)
+                        }
+
+                    })
+            }
+        }
+
     }
 
+
 }
 
 @Composable
-fun TouchPad(modifier: Modifier){
-    Box(
-        modifier = modifier
-            .size(
-                width = 330.dp,
-                height = 201.dp
-            )
-            .border(
-                width = 2.dp,
-                color = BorderColor,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .clip(RectangleShape)
-            .background(
-                Brush.horizontalGradient(
-                    colors = listOf(Color.White, WheelLightGray),
-                    startX = 0f,
-                    endX = 3000f // Adjust as needed for your layout
-                )
-            ),
-        contentAlignment = Alignment.Center
-    ){}
-}
+fun WheelItemTab(currentPage: Int, tabId: Int, text: String, onTabClick: (Int) -> Unit) {
+    val isSelected = currentPage == tabId
 
-@Composable
-fun MiddleRow(isRemoteWheelSelected : Boolean,
-              modifier: Modifier,
-              remoteWheelSelectedOrNot:(Boolean) -> Unit){
-
-    Row(
-        modifier = modifier
-            .border(
-                width = 2.dp,
-                color = Color.Gray,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(2.dp)
+    val textColor = if (isSelected) Color.White else UnselectedBottomNavTextColor
+    val backgroundColor = if (isSelected) SelectedBottomNavTextColor else Color.Transparent
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        shape = RoundedCornerShape(5.dp),
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(horizontal = 3.dp)
+            .clickableWithNoRippleEffect {
+                onTabClick.invoke(tabId)
+            },
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
     ) {
         Box(
-            modifier = Modifier
-                .padding(2.dp)
-                .clickable {
-                    remoteWheelSelectedOrNot(true)
-                }
+            Modifier
+                .fillMaxSize()
+                .height(29.dp)
+                .background(backgroundColor),
+            contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Remote wheel",
-                modifier = Modifier
-                    .background(
-                        color =
-                        if(isRemoteWheelSelected)
-                            SelectedColor
-                        else
-                            Color.White,
-                        shape = RoundedCornerShape(5.dp)
-                    )
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 6.dp,
-                        bottom = 6.dp
-                    ),
-                fontSize = 12.sp,
-                fontWeight = FontWeight(500),
-                color = if (isRemoteWheelSelected)
-                    Color.White
-                else
-                    TextColor
+                modifier = Modifier.wrapContentSize(),
+                textAlign = TextAlign.Center,
+                text = text,
+                color = textColor,
+                fontSize = 13.sp,
+                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
             )
+
         }
 
-        Box(
-            modifier = Modifier
-                .padding(2.dp)
-                .clickable {
-                    remoteWheelSelectedOrNot(false)
-                }
-        ) {
-            Text(
-                text = "Touch pad",
-                modifier = Modifier
-                    .background(
-                        color =
-                        if(isRemoteWheelSelected)
-                            Color.White
-                        else
-                            SelectedColor,
-                        shape = RoundedCornerShape(5.dp)
-                    )
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 6.dp,
-                        bottom = 6.dp
-                    ),
-                fontSize = 12.sp,
-                fontWeight = FontWeight(500),
-                color = if (isRemoteWheelSelected)
-                    TextColor
-                else
-                    Color.White
-            )
-        }
     }
-}
-
-
-@Preview(showSystemUi = true)
-@Composable
-fun Preview(){
-    RemoteScreen()
 }

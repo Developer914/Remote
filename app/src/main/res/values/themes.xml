@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Remote" parent="android:Theme.Material.Light.NoActionBar" />
+
+
+    <style name="SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenBackground" tools:ignore="NewApi">
+            @color/white
+        </item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">
+            @mipmap/ic_launcher
+        </item>
+        <item name="postSplashScreenTheme">@style/Theme.Remote</item>
+    </style>
 </resources>
