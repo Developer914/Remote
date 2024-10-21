@@ -18,11 +18,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.remote.R
+import com.example.remote.navigation.NavDestinations
 import com.example.remote.util.ext.StatBarColor
 import com.example.remote.resources.backgroundImages
 import com.example.remote.resources.headings
@@ -32,7 +37,7 @@ import com.example.remote.ui.theme.SelectedColor
 import java.util.Locale
 
 @Composable
-fun OnboardingScreen(onClick: () -> Unit) {
+fun OnboardingScreen(navController: NavHostController) {
     val index = remember { mutableIntStateOf(0) }
     Box {
         StatBarColor(Color.White)
@@ -46,12 +51,17 @@ fun OnboardingScreen(onClick: () -> Unit) {
             )
             ContinueButton {
                 if (index.intValue == backgroundImages.size - 1) {
-                    onClick()
+                    navController.navigate(NavDestinations.HOME_SCREEN) {
+                        popUpTo(NavDestinations.ONBOARDING_SCREEN) {
+                            inclusive = true
+                        }
+                    }
                 } else {
                     index.intValue += 1
                 }
             }
         }
+
     }
 
 }
@@ -143,4 +153,11 @@ fun ContinueButton(onClick: () -> Unit) {
             )
         }
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun Preview() {
+    val navController = rememberNavController()
+    OnboardingScreen(navController)
 }

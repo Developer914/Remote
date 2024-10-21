@@ -15,6 +15,7 @@ composeBom = "2024.04.01"
 material = "1.7.4"
 navigationCompose = "2.8.3"
 ui = "1.7.4"
+uiText = "1.7.4"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -24,6 +25,7 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigationCompose" }
+androidx-ui-text = { module = "androidx.compose.ui:ui-text", version.ref = "uiText" }
 dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicator" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

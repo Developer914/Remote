@@ -2,7 +2,6 @@ package com.example.remote
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RemoteTheme {
-                App()
+                NavHostContainer()
             }
         }
     }
@@ -30,20 +29,19 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App() {
-    val navController = rememberNavController()
-    val goNext = remember { mutableStateOf(false) }
-    Scaffold(
-        bottomBar = {
-            if (goNext.value) BottomNavigationBar(navController)
-        },
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        OnboardingScreen {
-            Log.d("mTag", "App: onclick")
-            goNext.value = true
-        }
-        if (goNext.value)
-            NavHostContainer(navController,innerPadding)
-    }
+//    val navController = rememberNavController()
+//    val goNext = remember { mutableStateOf(false) }
+//    Scaffold(
+//        bottomBar = {
+//            if (goNext.value) BottomNavigationBar(navController)
+//        },
+//        modifier = Modifier.fillMaxSize()
+//    ) { innerPadding ->
+//        OnboardingScreen {
+//            goNext.value = true
+//        }
+//        if (goNext.value)
+//            NavHostContainer(navController,innerPadding)
+//    }
 }
 

@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -188,8 +187,7 @@ private fun Tab(
             textAlign = TextAlign.Center,
             text = text,
             color = color,
-            fontSize = (16).sp,
-            fontFamily = FontFamily(Font(R.font.plus_jakarta_sans_bold))
+            fontSize = (16).sp
         )
     }
 
@@ -314,8 +312,7 @@ fun WheelItemTab(currentPage: Int, tabId: Int, text: String, onTabClick: (Int) -
                 textAlign = TextAlign.Center,
                 text = text,
                 color = textColor,
-                fontSize = 13.sp,
-                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+                fontSize = 13.sp
             )
 
         }

@@ -20,7 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -157,16 +159,19 @@ fun DeviceItem(){
             verticalAlignment = Alignment.CenterVertically
         ){
             Image(
-                painterResource(R.drawable.ic_tv),
+                painterResource(R.drawable.chromecast_tv),
                 "",
                 modifier = Modifier
+                    .weight(.3f)
                     .padding(
                         start = 17.2.dp
-                    )
+                    ),
+                contentScale = ContentScale.Crop
             )
 
             Column(
                 modifier = Modifier
+                    .weight(.7f)
                     .padding(
                         start = 15.dp
                     )

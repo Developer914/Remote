@@ -32,7 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.remote.R
+import com.example.remote.navigation.NavDestinations
 import com.example.remote.util.ext.StatBarColor
 import com.example.remote.ui.theme.BlackWith10Opacity
 import com.example.remote.ui.theme.CardBackground
@@ -40,7 +42,7 @@ import com.example.remote.ui.theme.PremiumYellow
 import com.example.remote.ui.theme.TextColor
 
 @Composable
-fun PremiumScreen() {
+fun SettingScreen(navController: NavHostController) {
     val ctx = LocalContext.current
     var toastText = remember { "" }
     StatBarColor(Color.White)
@@ -52,8 +54,11 @@ fun PremiumScreen() {
                 color = Color.White
             )
     ) {
-        PremiumCard("hello", "hi") {
-            Toast.makeText(ctx, it, Toast.LENGTH_SHORT).show()
+        PremiumCard("PREMIUM NOW!", "Full remote\n" +
+                "access, High \n" +
+                "Quality Casting and No ads.") {
+            //Toast.makeText(ctx, it, Toast.LENGTH_SHORT).show()
+            navController.navigate(NavDestinations.PREMIUM_SCREEN)
         }
         Heading("General")
         GeneralSettings()
@@ -110,16 +115,14 @@ private fun PremiumCard(title: String, subtitle: String, onClick: (String) -> Un
                 )
         ) {
             Text(
-                text = "PREMIUM NOW!",
+                text = title,
                 color = Color.White,
                 fontSize = 14.sp,
                 fontWeight = FontWeight(600)
             )
 
             Text(
-                text = "Full remote\n" +
-                        "access, High \n" +
-                        "Quality Casting and No ads.",
+                text = subtitle,
                 modifier = Modifier
                     .padding(
                         top = 8.dp
@@ -321,8 +324,3 @@ fun ShowToast(str: String) {
     Toast.makeText(LocalContext.current, str, Toast.LENGTH_SHORT).show()
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun Preview() {
-    PremiumScreen()
-}
