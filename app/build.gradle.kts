@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -47,10 +49,14 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    hilt {
+        enableAggregatingTask = false
+    }
 }
 
 dependencies {
 
+    // AndroidX core libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,20 +72,44 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(kotlin("script-runtime"))
 
+    // SplashScreen API
     implementation(libs.androidx.core.splashscreen)
+
+    // Dots indicator for onboarding
     implementation(libs.dotsindicator)
 
+    // Navigation runtime
     implementation(libs.androidx.navigation.runtime.ktx)
 
+    // Testing libraries
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
+    // Debugging tools
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation (libs.androidx.ui.text)
 
+    // Fonts
+    implementation(libs.androidx.ui.text)
 
+    // SDP/SSP
+    implementation(libs.sdp.compose)
+
+    // Google Billing
+    implementation(libs.billing)
+    implementation(libs.billing.ktx)
+
+    // Hilt for Dependency Injection
+    implementation(libs.hilt.android) // Hilt library
+    kapt(libs.hilt.compiler)          // Hilt compiler for annotation processing
+    implementation(libs.androidx.hilt.navigation.compose) // Hilt navigation for Compose
+
+    // Force JavaPoet version to resolve the Hilt issue
+    implementation("com.squareup:javapoet:1.13.0") // This ensures compatibility with Hilt
+
+    // Preferences management
+    implementation(libs.easyprefs)
 }

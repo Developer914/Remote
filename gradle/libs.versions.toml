@@ -1,9 +1,14 @@
 [versions]
 accompanistSystemuicontroller = "0.30.1"
 agp = "8.6.0"
+billing = "7.1.1"
 constraintlayoutCompose = "1.0.1"
 coreSplashscreen = "1.0.1"
 dotsindicator = "5.0"
+easyprefs = "1.10.0"
+hiltAndroid = "2.51.1"
+hiltCompiler = "2.49"
+hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -14,6 +19,7 @@ activityCompose = "1.9.2"
 composeBom = "2024.04.01"
 material = "1.7.4"
 navigationCompose = "2.8.3"
+sdpCompose = "1.1.0"
 ui = "1.7.4"
 uiText = "1.7.4"
 
@@ -22,11 +28,17 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigationCompose" }
 androidx-ui-text = { module = "androidx.compose.ui:ui-text", version.ref = "uiText" }
+billing = { module = "com.android.billingclient:billing", version.ref = "billing" }
+billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }
 dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicator" }
+easyprefs = { module = "com.pixplicity.easyprefs:EasyPrefs", version.ref = "easyprefs" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -40,9 +52,11 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+sdp-compose = { module = "com.github.Kaaveh:sdp-compose", version.ref = "sdpCompose" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version = "2.51.1" }
 
